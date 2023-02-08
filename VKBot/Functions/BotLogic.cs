@@ -80,12 +80,15 @@ namespace VKBot.Functions
                             userid, keyboardbuilder.Build());
                         goto case "команды";
 
+                    case "перелет":
+                        break;
+
                     case "передать":
                         break;
 
                     case "сектор":
                         SpaceTravel.GetSector(userid);
-                        break;
+                        goto case "команды";
 
                     case "команды":
                         Menu();
@@ -106,7 +109,7 @@ namespace VKBot.Functions
         private static void Menu()
         {
             keyboardbuilder.AddButton("Сектор", "сектор", null);
-            keyboardbuilder.AddButton("Перелет", "сектор", null);
+            keyboardbuilder.AddButton("Перелет", "перелет", null);
             keyboardbuilder.AddLine();
             keyboardbuilder.AddButton("Перевести", "перевести", null);
         }

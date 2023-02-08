@@ -1,4 +1,6 @@
-﻿namespace VKBot.Utilities
+﻿using VKBot.Utilities;
+
+namespace VKBot.Functions
 {
     public class BotLogic : VKLogic
     {
@@ -14,9 +16,12 @@
         public static bool Receive()
         {
 
-            object[] messageinfo = VKLogic.GetMessage();
+            object[] messageinfo = GetMessage();
             long? userid = Convert.ToInt32(messageinfo[2]);
             string message = "";
+
+            //if (VKLogic.CheckBan() != false)
+            //    return false;
 
             if (messageinfo[0] == null)
                 return false;
@@ -110,11 +115,11 @@
                     gender = random.Next(0, 2);
                     break;
 
-                case ("М"):
+                case "М":
                     gender = 0;
                     break;
 
-                case ("Ж"):
+                case "Ж":
                     gender = 1;
                     break;
             }

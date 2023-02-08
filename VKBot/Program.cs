@@ -1,4 +1,5 @@
-﻿using VKBot.Utilities;
+﻿using VKBot.Functions;
+using VKBot.Utilities;
 
 namespace VKBot
 {
@@ -7,9 +8,7 @@ namespace VKBot
         static void Main()
         {
             VKLogic.InitializationToken();
-
-            if (VKLogic.CheckBan() == false)
-                BotLogic.BotMain();
+            BotLogic.BotMain();
         }
     }
 }

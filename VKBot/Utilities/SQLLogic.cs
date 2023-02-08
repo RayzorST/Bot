@@ -24,6 +24,14 @@ namespace VKBot.Utilities
             command.CommandText = String.Format($"SELECT COUNT(*) FROM {from} WHERE {where}={comparison};" );
         }
 
+        public static void Search(bool criterion, string item, string from, string where, string comparison)
+        {
+            if(criterion)
+                command.CommandText = String.Format($"SELECT {item} FROM {from} WHERE {where}={comparison};");
+            else
+                command.CommandText = String.Format($"SELECT {item} FROM {from};");
+        }
+
         public static void Insert(bool allValues, string into, string setvalue, string value = null)
         {
             if(allValues)

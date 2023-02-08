@@ -30,18 +30,20 @@ namespace VKBot.Utilities
             }
         }
 
-        public static bool CheckBan()
+        public static bool CheckBan(long? userid)
         {
-            object[] messageinfo = GetMessage();
-            long? userid = Convert.ToInt32(messageinfo[2]);
-
             SQLLogic.SearchCount("userinfo", "UserID", userid.ToString());
             int count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
             if (count == 0)
                 return false;
             else
             {
-                return true;
+                SQLLogic.Search(true, "isBaned", "userinfo", "UserID", userid.ToString());
+                count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
+                if (count == 0)
+                    return true;
+                else
+                    return false;
             }
         }
 
@@ -93,10 +95,12 @@ namespace VKBot.Utilities
 
                 userid = dialogs.Messages[0].UserId.Value;
                 vkApi.Messages.MarkAsRead(userid.ToString());
+
                 return new object[] { message, keyname, userid };
             }
             else
                 return new object[] { null, null, null };
+            Console.WriteLine($"[log]Message send to {userid}");
 
         }
     }

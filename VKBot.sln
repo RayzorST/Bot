@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VKBot", "VKBot\VKBot.csproj", "{515AD683-CEE2-4223-8615-EC9D86E9AB12}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{515AD683-CEE2-4223-8615-EC9D86E9AB12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{515AD683-CEE2-4223-8615-EC9D86E9AB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{515AD683-CEE2-4223-8615-EC9D86E9AB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{515AD683-CEE2-4223-8615-EC9D86E9AB12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {21D9C29E-935E-4F2D-B8C5-427B86682793}
+	EndGlobalSection
+EndGlobal

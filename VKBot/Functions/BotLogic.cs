@@ -9,13 +9,13 @@ namespace VKBot.Functions
             while (true)
             {
                 Thread.Sleep(20);
+                
                 Receive();
             }
         }
 
         public static bool Receive()
         {
-
             object[] messageinfo = GetMessage();
             long? userid = Convert.ToInt32(messageinfo[2]);
             string message = "";
@@ -36,10 +36,12 @@ namespace VKBot.Functions
             return true;
         }
 
+        static bool TrySendmoney = false;
         static int command = 0;
         public static void Response(string message, long? userid)
         {
             SQLLogic.SearchCount("userinfo", "UserID", userid.ToString());
+
             int count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
 
             if (count == 0)
@@ -60,6 +62,15 @@ namespace VKBot.Functions
                         break;
                 }
             }
+            else if (TrySendmoney)
+            {
+                string[] infomessage = message.Split(" ");
+                Simplest.SendMoney(userid, infomessage[0], infomessage[1]);
+                TrySendmoney = false;
+                Menu();
+                SendMessage("Перевод успешен",
+                            userid, keyboardbuilder.Build());
+            }
             else
             {
                 switch (message.ToLower())
@@ -69,17 +80,35 @@ namespace VKBot.Functions
                             userid, keyboardbuilder.Build());
                         goto case "команды";
 
+                    case "передать":
+                        break;
+
                     case "сектор":
                         SpaceTravel.GetSector(userid);
                         break;
 
                     case "команды":
-                        keyboardbuilder.AddButton("Сектор", "сектор", null);
+                        Menu();
                         SendMessage("Вот мои возможности:",
                             userid, keyboardbuilder.Build());
                         break;
+
+                    case "перевести":
+                        TrySendmoney = true;
+                        keyboardbuilder.Clear();
+                        SendMessage("Чтобы перевести кредиты другому игроку напишите: [игровой ID] [сумма] ",
+                           userid, keyboardbuilder.Build());
+                        break;
                 }
             }
+        }
+
+        private static void Menu()
+        {
+            keyboardbuilder.AddButton("Сектор", "сектор", null);
+            keyboardbuilder.AddButton("Перелет", "сектор", null);
+            keyboardbuilder.AddLine();
+            keyboardbuilder.AddButton("Перевести", "перевести", null);
         }
     }
 }

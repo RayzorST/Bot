@@ -6,7 +6,8 @@ namespace VKBot.Functions
     {
         public static void GetSectors()
         {
-            string[] Sectors;
+            SQLLogic.Search(false, "SectorName", "sectors", null, null);
+            string[] Sectors = Convert.ToString(SQLLogic.command.ExecuteScalar()).Split("/");
         }
 
         public static void GetSector(long? userid)
@@ -20,7 +21,12 @@ namespace VKBot.Functions
             SQLLogic.Search(false, "Routes", "sectors", null, null);
             int routes = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
 
-            VKLogic.SendMessage($"Название сектора {name}\nКол-во блтжайших секторов {routes}", userid, null);
+            VKLogic.SendMessage($"Название сектора {name}\nКол-во ближайших секторов {routes}", userid, null);
+        }
+
+        public static void GoTo()
+        {
+
         }
     }
 }

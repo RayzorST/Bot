@@ -32,6 +32,12 @@ namespace VKBot.Utilities
                 command.CommandText = String.Format($"SELECT {item} FROM {from};");
         }
 
+        public static void Update(string from, string set, string where)
+        {
+            command.CommandText = String.Format($"UPDATE {from} SET {set} WHERE {where};");
+            command.ExecuteScalar();
+        }
+
         public static void Insert(bool allValues, string into, string setvalue, string value = null)
         {
             if(allValues)

@@ -40,9 +40,7 @@ namespace VKBot.Utilities
 
         public static bool CheckUser(long? userid)
         {
-            SQLLogic.SearchCount("userinfo", "UserID", userid.ToString());
-
-            if (Convert.ToInt32(SQLLogic.command.ExecuteScalar()) == 0)
+            if (SQLLogic.SearchCount("userinfo", "UserID", userid.ToString()) == 0)
                 return false;
             else
                 return true;

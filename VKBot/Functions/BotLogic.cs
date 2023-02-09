@@ -63,9 +63,6 @@ namespace VKBot.Functions
                 string[] infomessage = message.Split(" ");
                 Simplest.SendMoney(userid, infomessage[0], infomessage[1]);
                 TrySendmoney = false;
-                Menu();
-                SendMessage("Перевод успешен",
-                            userid, keyboardbuilder.Build());
             }
             else
             {

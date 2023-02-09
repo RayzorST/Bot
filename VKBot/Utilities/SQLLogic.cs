@@ -13,6 +13,7 @@ namespace VKBot.Utilities
             $"Port = {Resources.ResourceManager.GetString("Port")}; " +
             $"CharSet = {Resources.ResourceManager.GetString("CharSet")}");
 
+        static int ConnectionAttempts = 0;
         public static void InitializationServer()
         {
             try
@@ -24,12 +25,19 @@ namespace VKBot.Utilities
             catch
             {
                 Console.WriteLine($"[log] [{DateTime.Now}] Connection with the server ({Resources.ResourceManager.GetString("Data Source")}) is not open");
+                ConnectionAttempts++;
+                if (ConnectionAttempts != 5)
+                {
+                    InitializationServer();
+                    Console.WriteLine($"[log] Attempt to connect: {ConnectionAttempts}");
+                }
             }
         }
 
-        public static void SearchCount(string from, string where, string comparison)
+        public static int SearchCount(string from, string where, string comparison)
         {
             command.CommandText = String.Format($"SELECT COUNT(*) FROM {from} WHERE {where}={comparison};" );
+            return Convert.ToInt32(SQLLogic.command.ExecuteScalar());
         }
 
         public static void Search(bool criterion, string item, string from, string where, string comparison)
@@ -44,6 +52,7 @@ namespace VKBot.Utilities
         {
             command.CommandText = String.Format($"UPDATE {from} SET {set} WHERE {where};");
             command.ExecuteScalar();
+            Console.WriteLine($"[log] [{DateTime.Now}] Information in {from} update on {set} where {where}");
         }
 
         public static void Insert(bool allValues, string into, string setvalue, string value = null)
@@ -53,6 +62,7 @@ namespace VKBot.Utilities
             else
                 command.CommandText = String.Format($"INSERT INTO {into} ({value}) VALUES ({setvalue});");
             command.ExecuteScalar();
+            Console.WriteLine($"[log] [{DateTime.Now}] Information in {into} insert {setvalue} where {value}");
         }
     }
 }

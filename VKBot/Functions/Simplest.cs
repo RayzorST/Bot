@@ -17,13 +17,22 @@ namespace VKBot.Functions
                         SQLLogic.Update("userinfo", "Credits=Credits-" + value, "GameID=" + Convert.ToString(from));
                         SQLLogic.Update("userinfo", "Credits=Credits+" + value, "GameID=" + to);
                     }
+                    else
+                    {
+                        BotLogic.Menu();
+                        VKLogic.SendMessage("Не хватает денег", from, VKLogic.keyboardbuilder.Build());
+                    }
                 }
                 else
-                    VKLogic.SendMessage("Пользователь не найден", from, null);
+                {
+                    BotLogic.Menu();
+                    VKLogic.SendMessage("Пользователь не найден", from, VKLogic.keyboardbuilder.Build());
+                }
             }
             catch
             {
-                VKLogic.SendMessage("Ошибка ввода", from, null);
+                BotLogic.Menu();
+                VKLogic.SendMessage("Ошибка ввода", from, VKLogic.keyboardbuilder.Build());
             }
                 
         }

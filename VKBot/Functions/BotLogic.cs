@@ -22,7 +22,7 @@ namespace VKBot.Functions
             long? userid = Convert.ToInt32(messageinfo[2]);
             string message = "";
 
-            if (VKLogic.CheckBan(userid) == true)
+            if (CheckBan(userid) == true)
                 return false;
 
             if (messageinfo[0] == null)

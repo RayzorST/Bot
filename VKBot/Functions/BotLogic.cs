@@ -40,11 +40,7 @@ namespace VKBot.Functions
         static int command = 0;
         public static void Response(string message, long? userid)
         {
-            SQLLogic.SearchCount("userinfo", "UserID", userid.ToString());
-
-            int count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
-
-            if (count == 0)
+            if (CheckUser(userid) == false)
             {
                 switch (command)
                 {
@@ -106,7 +102,7 @@ namespace VKBot.Functions
             }
         }
 
-        private static void Menu()
+        public static void Menu()
         {
             keyboardbuilder.AddButton("Сектор", "сектор", null);
             keyboardbuilder.AddButton("Перелет", "перелет", null);

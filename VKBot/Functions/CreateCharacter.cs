@@ -1,4 +1,6 @@
-﻿namespace VKBot.Utilities
+﻿using VKBot.Functions;
+
+namespace VKBot.Utilities
 {
     public class CreateCharacter : VKLogic
     {
@@ -85,8 +87,7 @@
 
                 case "готово":
                     SQLLogic.Insert(true, "userinfo", $"{userid.ToString()}, 1, '{nickname}', {userid.ToString()}, 20000, {gender}, 'Prosperity'", null);
-                    keyboardbuilder.Clear();
-                    keyboardbuilder.AddButton("Информация о секторе", "сектор", null);
+                    BotLogic.Menu();
                     SendMessage($"\nЯ обновил информацию, {nickname}.\nА теперь можем отправиться покорять эту галактику.",
                     userid, keyboardbuilder.Build());
                     return 0;

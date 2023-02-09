@@ -3,7 +3,6 @@ using VkNet.Model;
 using VkNet.Model.RequestParams;
 using VkNet.Enums.Filters;
 using VkNet.Model.Keyboard;
-using VKBot.Utilities;
 
 namespace VKBot.Utilities
 {
@@ -14,33 +13,50 @@ namespace VKBot.Utilities
 
         public static void InitializationToken()
         {
-            vkApi.Authorize(new ApiAuthParams
+            try
             {
-                AccessToken = Resources.ResourceManager.GetString("GroupToken")
-            });
+                vkApi.Authorize(new ApiAuthParams
+                {
+                    AccessToken = Resources.ResourceManager.GetString("GroupToken")
+                });
+                Console.WriteLine($"[log] [{DateTime.Now}] Token is valid");
+            }
+            catch
+            {
+                Console.WriteLine($"[log] [{DateTime.Now}] Token is not valid");
+
+            }
 
             try
             {
                 SQLLogic.InitializationServer();
-                Console.WriteLine("[log]Server started");
+                Console.WriteLine($"[log] [{DateTime.Now}] Server started");
             }
             catch
             {
-                Console.WriteLine("[log]Server Error");
+                Console.WriteLine($"[log] [{DateTime.Now}] Server Error ");
             }
+        }
+
+        public static bool CheckUser(long? userid)
+        {
+            SQLLogic.SearchCount("userinfo", "UserID", userid.ToString());
+
+            if (Convert.ToInt32(SQLLogic.command.ExecuteScalar()) == 0)
+                return false;
+            else
+                return true;
         }
 
         public static bool CheckBan(long? userid)
         {
-            SQLLogic.SearchCount("userinfo", "UserID", userid.ToString());
-            int count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
-            if (count == 0)
+            if (CheckUser(userid) == true)
                 return false;
             else
             {
                 SQLLogic.Search(true, "isBaned", "userinfo", "UserID", userid.ToString());
-                count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
-                if (count == 0)
+
+                if (Convert.ToInt32(SQLLogic.command.ExecuteScalar()) == 0)
                     return true;
                 else
                     return false;
@@ -49,14 +65,21 @@ namespace VKBot.Utilities
 
         public static void SendMessage(string message, long? userid, MessageKeyboard Keybord)
         {
-            vkApi.Messages.Send(new MessagesSendParams
+            try
             {
-                Message = message,
-                UserId = userid,
-                RandomId = new Random().Next(),
-                Keyboard = Keybord
-            });
-            Console.WriteLine($"[log]Message send to {userid}");
+                vkApi.Messages.Send(new MessagesSendParams
+                {
+                    Message = message,
+                    UserId = userid,
+                    RandomId = new Random().Next(),
+                    Keyboard = Keybord
+                });
+                Console.WriteLine($"[log] [{DateTime.Now}] Message was sent to {userid}");
+            }
+            catch
+            {
+                Console.WriteLine($"[log] [{DateTime.Now}] Message was not sent to {userid}");
+            }
         }
 
         public static object[] GetMessage()
@@ -100,7 +123,7 @@ namespace VKBot.Utilities
             }
             else
                 return new object[] { null, null, null };
-            Console.WriteLine($"[log]Message send to {userid}");
+            Console.WriteLine($"[log]Message was sent from {userid}");
 
         }
     }

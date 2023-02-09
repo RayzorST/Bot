@@ -15,8 +15,16 @@ namespace VKBot.Utilities
 
         public static void InitializationServer()
         {
-            connection.Open();
-            command.Connection = connection;
+            try
+            {
+                connection.Open();
+                command.Connection = connection;
+                Console.WriteLine($"[log] [{DateTime.Now}] Connection with the server ({Resources.ResourceManager.GetString("Data Source")}) is open");
+            }
+            catch
+            {
+                Console.WriteLine($"[log] [{DateTime.Now}] Connection with the server ({Resources.ResourceManager.GetString("Data Source")}) is not open");
+            }
         }
 
         public static void SearchCount(string from, string where, string comparison)

@@ -10,22 +10,34 @@ namespace VKBot.Functions
             int count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
             try
             {
-                if (count >= Convert.ToInt32(value))
+                if (VKLogic.CheckUser(from))
                 {
-                    SQLLogic.Update("userinfo", "Credits=Credits-" + value, "GameID=" + Convert.ToString(from));
-                    SQLLogic.Update("userinfo", "Credits=Credits+" + value, "GameID=" + to);
+                    if (count >= Convert.ToInt32(value))
+                    {
+                        SQLLogic.Update("userinfo", "Credits=Credits-" + value, "GameID=" + Convert.ToString(from));
+                        SQLLogic.Update("userinfo", "Credits=Credits+" + value, "GameID=" + to);
+                    }
                 }
+                else
+                    VKLogic.SendMessage("Пользователь не найден", from, null);
             }
             catch
             {
-                VKLogic.SendMessage("Ощибка ввода", from, null);
+                VKLogic.SendMessage("Ошибка ввода", from, null);
             }
                 
         }
 
         public static void SendMesseng(string from, string to, int text)
         {
+            try
+            {
+                //if(VKLogic.CheckUser(to))
+            }
+            catch
+            {
 
+            }
         }
     }
 }

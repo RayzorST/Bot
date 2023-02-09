@@ -122,7 +122,7 @@
     <comment>Кодировка</comment>
   </data>
   <data name="Data Source" xml:space="preserve">
-    <value>localhost</value>
+    <value>26.11.246.124</value>
     <comment>Сервер</comment>
   </data>
   <data name="Database" xml:space="preserve">

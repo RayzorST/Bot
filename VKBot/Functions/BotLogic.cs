@@ -1,4 +1,5 @@
-﻿using VKBot.Utilities;
+﻿using VKBot.Models;
+using VKBot.Utilities;
 
 namespace VKBot.Functions
 {
@@ -36,7 +37,7 @@ namespace VKBot.Functions
             return true;
         }
 
-        static bool TrySendmoney = false;
+        static bool TrySendmoney = false, SettingsOn = false;
         static int command = 0;
         public static void Response(string message, long? userid)
         {
@@ -64,6 +65,19 @@ namespace VKBot.Functions
                 Simplest.SendMoney(userid, infomessage[0], infomessage[1]);
                 TrySendmoney = false;
             }
+            else if (SettingsOn)
+            {
+                switch (message)
+                {
+                    default:
+                        break;
+
+                    case "удалить":
+
+                        break;
+                }
+                SettingsOn = false;
+            }
             else
             {
                 switch (message.ToLower())
@@ -84,7 +98,7 @@ namespace VKBot.Functions
                         goto case "команды";
 
                     case "команды":
-                        Menu();
+                        Menus.Menu();
                         SendMessage("Вот мои возможности:",
                             userid, keyboardbuilder.Build());
                         break;
@@ -95,16 +109,15 @@ namespace VKBot.Functions
                         SendMessage("Чтобы перевести кредиты другому игроку напишите: [игровой ID] [сумма] ",
                            userid, keyboardbuilder.Build());
                         break;
+
+                    case "настройки":
+                        SettingsOn = true;
+                        Menus.Menu_Settings();
+                        SendMessage("Настройки",
+                           userid, keyboardbuilder.Build());
+                        break;
                 }
             }
-        }
-
-        public static void Menu()
-        {
-            keyboardbuilder.AddButton("Сектор", "сектор", null);
-            keyboardbuilder.AddButton("Перелет", "перелет", null);
-            keyboardbuilder.AddLine();
-            keyboardbuilder.AddButton("Перевести", "перевести", null);
         }
     }
 }

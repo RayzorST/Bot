@@ -24,9 +24,17 @@ namespace VKBot.Functions
             VKLogic.SendMessage($"Название сектора {name}\nКол-во ближайших секторов {routes}", userid, null);
         }
 
-        public static void GoTo()
+        public static void GoTo(string SectorName)
         {
+            try
+            {
 
+                SQLLogic.Update("userinfo", SectorName, "Sector");
+            }
+            catch
+            {
+
+            }
         }
     }
 }

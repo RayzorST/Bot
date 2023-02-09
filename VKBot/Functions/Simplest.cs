@@ -1,4 +1,5 @@
-﻿using VKBot.Utilities;
+﻿using VKBot.Models;
+using VKBot.Utilities;
 
 namespace VKBot.Functions
 {
@@ -14,24 +15,24 @@ namespace VKBot.Functions
                 {
                     if (count >= Convert.ToInt32(value))
                     {
-                        SQLLogic.Update("userinfo", "Credits=Credits-" + value, "GameID=" + Convert.ToString(from));
-                        SQLLogic.Update("userinfo", "Credits=Credits+" + value, "GameID=" + to);
+                        SQLLogic.Update("userinfo", $"Credits=Credits-{value}", "GameID=" + Convert.ToString(from));
+                        SQLLogic.Update("userinfo", $"Credits=Credits+{value}", $"GameID={to} OR UserID={to}");
                     }
                     else
                     {
-                        BotLogic.Menu();
+                        Menus.Menu();
                         VKLogic.SendMessage("Не хватает денег", from, VKLogic.keyboardbuilder.Build());
                     }
                 }
                 else
                 {
-                    BotLogic.Menu();
+                    Menus.Menu();
                     VKLogic.SendMessage("Пользователь не найден", from, VKLogic.keyboardbuilder.Build());
                 }
             }
             catch
             {
-                BotLogic.Menu();
+                Menus.Menu();
                 VKLogic.SendMessage("Ошибка ввода", from, VKLogic.keyboardbuilder.Build());
             }
                 
@@ -47,6 +48,11 @@ namespace VKBot.Functions
             {
 
             }
+        }
+
+        public static void DeleteAccount(string userid)
+        {
+
         }
     }
 }

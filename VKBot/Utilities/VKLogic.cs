@@ -67,6 +67,7 @@ namespace VKBot.Utilities
             {
                 vkApi.Messages.Send(new MessagesSendParams
                 {
+                    //domain вместо userid
                     Message = message,
                     UserId = userid,
                     RandomId = new Random().Next(),

@@ -1,4 +1,5 @@
 ﻿using VKBot.Functions;
+using VKBot.Models;
 
 namespace VKBot.Utilities
 {
@@ -62,14 +63,22 @@ namespace VKBot.Utilities
         public static int CreateCharacterPart2(long? userid, string message)
         {
             nickname = message;
-            keyboardbuilder.AddButton("Гендер", "гендер", null);
-            keyboardbuilder.AddButton("Имя", "имя", null);
-            keyboardbuilder.AddLine();
-            keyboardbuilder.AddButton("Готово", "готово", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Positive);
-            SendMessage($"\nВсе. Я почти занес изменения в базу.\nХочешь что-нибуть изменить?",
-               userid, keyboardbuilder.Build());
-
-            return 3;
+            if(nickname.Length <= 20 && nickname.Length >= 3)
+            {
+                keyboardbuilder.AddButton("Гендер", "гендер", null);
+                keyboardbuilder.AddButton("Имя", "имя", null);
+                keyboardbuilder.AddLine();
+                keyboardbuilder.AddButton("Готово", "готово", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Positive);
+                SendMessage($"\nВсе. Я почти занес изменения в базу.\nХочешь что-нибуть изменить?",
+                   userid, keyboardbuilder.Build());
+                return 3;
+            }
+            else
+            {
+                SendMessage($"\nВ имени должно быть от 3 до 20 символов",
+                   userid, null);
+                return 2;
+            }
         }
 
         public static int CreateCharacterPart3(long? userid, string message)
@@ -87,7 +96,7 @@ namespace VKBot.Utilities
 
                 case "готово":
                     SQLLogic.Insert(true, "userinfo", $"{userid.ToString()}, 1, '{nickname}', {userid.ToString()}, 20000, {gender}, 'Prosperity'", null);
-                    BotLogic.Menu();
+                    Menus.Menu();
                     SendMessage($"\nЯ обновил информацию, {nickname}.\nА теперь можем отправиться покорять эту галактику.",
                     userid, keyboardbuilder.Build());
                     return 0;

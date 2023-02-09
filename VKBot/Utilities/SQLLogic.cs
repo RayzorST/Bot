@@ -37,7 +37,8 @@ namespace VKBot.Utilities
         public static int SearchCount(string from, string where, string comparison)
         {
             command.CommandText = String.Format($"SELECT COUNT(*) FROM {from} WHERE {where}={comparison};" );
-            return Convert.ToInt32(SQLLogic.command.ExecuteScalar());
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            return count;
         }
 
         public static void Search(bool criterion, string item, string from, string where, string comparison)

@@ -55,9 +55,9 @@ namespace VKBot.Utilities
                 SQLLogic.Search(true, "isBaned", "userinfo", "UserID", userid.ToString());
 
                 if (Convert.ToInt32(SQLLogic.command.ExecuteScalar()) == 0)
-                    return true;
-                else
                     return false;
+                else
+                    return true;
             }
         }
 
@@ -117,12 +117,11 @@ namespace VKBot.Utilities
 
                 userid = dialogs.Messages[0].UserId.Value;
                 vkApi.Messages.MarkAsRead(userid.ToString());
-
+                Console.WriteLine($"[log] [{DateTime.Now}] Message was sent from {userid}");
                 return new object[] { message, keyname, userid };
             }
             else
                 return new object[] { null, null, null };
-            Console.WriteLine($"[log]Message was sent from {userid}");
 
         }
     }

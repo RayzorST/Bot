@@ -1,4 +1,5 @@
 ﻿using VKBot.Models;
+using VKBot.Models.MenuFunctions;
 using VKBot.Utilities;
 
 namespace VKBot.Functions
@@ -37,27 +38,12 @@ namespace VKBot.Functions
             return true;
         }
 
-        static bool TrySendmoney = false, SettingsOn = false;
-        static int command = 0;
+        public static bool TrySendmoney = false, SettingsOn = false;
         public static void Response(string message, long? userid)
         {
             if (CheckUser(userid) == false)
             {
-                switch (command)
-                {
-                    case 0:
-                        command = CreateCharacter.CreateCharacterPart0(userid);
-                        break;
-                    case 1:
-                        command = CreateCharacter.CreateCharacterPart1(userid, message);
-                        break;
-                    case 2:
-                        command = CreateCharacter.CreateCharacterPart2(userid, message);
-                        break;
-                    case 3:
-                        command = CreateCharacter.CreateCharacterPart3(userid, message);
-                        break;
-                }
+                CreateCharacter.NewCharacter(userid, message);
             }
             else if (TrySendmoney)
             {
@@ -67,56 +53,12 @@ namespace VKBot.Functions
             }
             else if (SettingsOn)
             {
-                switch (message)
-                {
-                    default:
-                        break;
-
-                    case "удалить":
-
-                        break;
-                }
+                Menu_Settings.Get(message, userid);
                 SettingsOn = false;
             }
             else
             {
-                switch (message.ToLower())
-                {
-                    default:
-                        SendMessage("Речь не распознана",
-                            userid, keyboardbuilder.Build());
-                        goto case "команды";
-
-                    case "перелет":
-                        break;
-
-                    case "передать":
-                        break;
-
-                    case "сектор":
-                        SpaceTravel.GetSector(userid);
-                        goto case "команды";
-
-                    case "команды":
-                        Menus.Menu();
-                        SendMessage("Вот мои возможности:",
-                            userid, keyboardbuilder.Build());
-                        break;
-
-                    case "перевести":
-                        TrySendmoney = true;
-                        keyboardbuilder.Clear();
-                        SendMessage("Чтобы перевести кредиты другому игроку напишите: [игровой ID] [сумма] ",
-                           userid, keyboardbuilder.Build());
-                        break;
-
-                    case "настройки":
-                        SettingsOn = true;
-                        Menus.Menu_Settings();
-                        SendMessage("Настройки",
-                           userid, keyboardbuilder.Build());
-                        break;
-                }
+                Menu.Get(message, userid);
             }
         }
     }

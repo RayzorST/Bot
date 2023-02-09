@@ -1,5 +1,6 @@
 ﻿using VKBot.Functions;
 using VKBot.Models;
+using VkNet.Model;
 
 namespace VKBot.Utilities
 {
@@ -9,8 +10,34 @@ namespace VKBot.Utilities
 
         static string nickname = "";
         static int gender = 0;
+        static int command = 0;
 
-        public static int CreateCharacterPart0(long? userid)
+        public static void NewCharacter(long? userid, string message)
+        {
+            switch (command)
+            {
+                case 0:
+                    command = CreateCharacterPart0(userid);
+                    break;
+                case 1:
+                    command = CreateCharacterPart1(userid, message);
+                    break;
+                case 2:
+                    command = CreateCharacterPart2(userid, message);
+                    break;
+                case 3:
+                    command = CreateCharacterPart3(userid, message);
+                    break;
+                case 4:
+                    command = ChangeGender(userid, message);
+                    break;
+                case 5:
+                    command = ChangeNickname(userid, message);
+                    break;
+            }
+        }
+
+        private static int CreateCharacterPart0(long? userid)
         {
             SendMessage("Привествую!\nЯ твой помощник" +
                      "\n\nДай-ка пробью тебя по базе...",
@@ -37,7 +64,7 @@ namespace VKBot.Utilities
             return 1;
         }
 
-        public static int CreateCharacterPart1(long? userid, string message)
+        private static int CreateCharacterPart1(long? userid, string message)
         {
             keyboardbuilder.Clear();
             switch (message)
@@ -60,7 +87,7 @@ namespace VKBot.Utilities
             return 2;
         }
 
-        public static int CreateCharacterPart2(long? userid, string message)
+        private static int CreateCharacterPart2(long? userid, string message)
         {
             nickname = message;
             if(nickname.Length <= 20 && nickname.Length >= 3)
@@ -81,7 +108,7 @@ namespace VKBot.Utilities
             }
         }
 
-        public static int CreateCharacterPart3(long? userid, string message)
+        private static int CreateCharacterPart3(long? userid, string message)
         {
             switch (message.ToLower())
             {
@@ -89,10 +116,16 @@ namespace VKBot.Utilities
                     return 3;
 
                 case "гендер":
-                    return 1;
+                    keyboardbuilder.AddButton("М", "М", null);
+                    keyboardbuilder.AddButton("Ж", "Ж", null);
+                    SendMessage($"Выбери пол",
+                       userid, keyboardbuilder.Build());
+                    return 4;
 
                 case "имя":
-                    return 2;
+                    SendMessage($"Введите имя",
+                       userid, keyboardbuilder.Build());
+                    return 5;
 
                 case "готово":
                     SQLLogic.Insert(true, "userinfo", $"{userid.ToString()}, 1, '{nickname}', {userid.ToString()}, 20000, {gender}, 'Prosperity'", null);
@@ -101,6 +134,31 @@ namespace VKBot.Utilities
                     userid, keyboardbuilder.Build());
                     return 0;
             }
+        }
+
+        private static int ChangeNickname(long? userid, string message)
+        {
+            nickname = message;
+            return 3;
+        }
+
+        private static int ChangeGender(long? userid, string message)
+        {
+            switch (message)
+            {
+                default:
+
+                    return 5;
+
+                case "М":
+                    gender = 0;
+                    break;
+
+                case "Ж":
+                    gender = 1;
+                    break;
+            }
+            return 3;
         }
     }
 }

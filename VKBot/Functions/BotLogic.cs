@@ -38,23 +38,20 @@ namespace VKBot.Functions
             return true;
         }
 
-        public static bool TrySendmoney = false, SettingsOn = false;
+        public static bool SocialOn = false, SettingsOn = false;
         public static void Response(string message, long? userid)
         {
             if (CheckUser(userid) == false)
             {
                 CreateCharacter.NewCharacter(userid, message);
             }
-            else if (TrySendmoney)
+            else if (SocialOn)
             {
-                string[] infomessage = message.Split(" ");
-                Simplest.SendMoney(userid, infomessage[0], infomessage[1]);
-                TrySendmoney = false;
+                Menu_Social.Get(message, userid);
             }
             else if (SettingsOn)
             {
                 Menu_Settings.Get(message, userid);
-                SettingsOn = false;
             }
             else
             {

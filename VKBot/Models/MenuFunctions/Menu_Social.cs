@@ -1,10 +1,9 @@
 ﻿using VKBot.Functions;
 using VKBot.Utilities;
-using VkNet.Model;
 
 namespace VKBot.Models.MenuFunctions
 {
-    public class Menu_Settings : VKLogic
+    internal class Menu_Social : VKLogic
     {
         public static void Get(string message, long? userid)
         {
@@ -14,19 +13,15 @@ namespace VKBot.Models.MenuFunctions
                     break;
 
                 case "назад":
-                    BotLogic.SettingsOn = false;
+                    BotLogic.SocialOn = false;
                     Menus.Menu();
                     SendMessage("Речь не распознана",
                         userid, keyboardbuilder.Build());
                     break;
 
-                case "сменить ник":
-                    break;
-
-                case "сменить пол":
-                    break;
-
-                case "удалить":
+                case "передать кредиты":
+                    string[] infomessage = message.Split(" ");
+                    Simplest.SendMoney(userid, infomessage[0], infomessage[1]);
                     break;
             }
         }

@@ -1,6 +1,4 @@
 ﻿using VKBot.Functions;
-using VkNet.Model.Keyboard;
-using VkNet.Model;
 using VKBot.Utilities;
 
 namespace VKBot.Models.MenuFunctions
@@ -32,8 +30,8 @@ namespace VKBot.Models.MenuFunctions
                         userid, keyboardbuilder.Build());
                     break;
 
-                case "перевести":
-                    BotLogic.TrySendmoney = true;
+                case "взаимоотношения":
+                    BotLogic.SocialOn = true;
                     keyboardbuilder.Clear();
                     SendMessage("Чтобы перевести кредиты другому игроку напишите: [игровой ID] [сумма] ",
                        userid, keyboardbuilder.Build());

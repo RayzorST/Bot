@@ -136,13 +136,13 @@ namespace VKBot.Utilities
             }
         }
 
-        private static int ChangeNickname(long? userid, string message)
+        public static int ChangeNickname(long? userid, string message)
         {
             nickname = message;
             return 3;
         }
 
-        private static int ChangeGender(long? userid, string message)
+        public static int ChangeGender(long? userid, string message)
         {
             switch (message)
             {

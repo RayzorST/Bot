@@ -67,7 +67,6 @@ namespace VKBot.Utilities
             {
                 vkApi.Messages.Send(new MessagesSendParams
                 {
-                    //domain вместо userid
                     Message = message,
                     UserId = userid,
                     RandomId = new Random().Next(),
@@ -78,6 +77,25 @@ namespace VKBot.Utilities
             catch
             {
                 Console.WriteLine($"[log] [{DateTime.Now}] Message was not sent to {userid}");
+            }
+        }
+
+        public static void SendMessageDomain(string message, string domain, MessageKeyboard Keybord)
+        {
+            try
+            {
+                vkApi.Messages.Send(new MessagesSendParams
+                {
+                    Message = message,
+                    Domain = domain,
+                    RandomId = new Random().Next(),
+                    Keyboard = Keybord
+                });
+                Console.WriteLine($"[log] [{DateTime.Now}] Message was sent to {domain}");
+            }
+            catch
+            {
+                Console.WriteLine($"[log] [{DateTime.Now}] Message was not sent to {domain}");
             }
         }
 
@@ -114,7 +132,6 @@ namespace VKBot.Utilities
                 {
                     keyname = "";
                 }
-
                 userid = dialogs.Messages[0].UserId.Value;
                 vkApi.Messages.MarkAsRead(userid.ToString());
                 Console.WriteLine($"[log] [{DateTime.Now}] Message was sent from {userid}");

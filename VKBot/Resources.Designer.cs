@@ -70,7 +70,7 @@ namespace VKBot {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на 26.11.246.124.
+        ///   Ищет локализованную строку, похожую на localhost.
         /// </summary>
         internal static string Data_Source {
             get {

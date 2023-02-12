@@ -14,8 +14,8 @@ namespace VKBot.Models.MenuFunctions
                     break;
 
                 case "назад":
-                    BotLogic.SettingsOn = false;
                     Menus.Menu();
+                    SQLLogic.Update("userinfo", "Menu=''", $"UserID={userid}");
                     SendMessage("Речь не распознана",
                         userid, keyboardbuilder.Build());
                     break;

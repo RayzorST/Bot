@@ -1,4 +1,5 @@
-﻿using VKBot.Utilities;
+﻿using VKBot.Functions;
+using VKBot.Utilities;
 
 namespace VKBot.Models
 {
@@ -7,9 +8,7 @@ namespace VKBot.Models
         public static void Menu()
         {
             VKLogic.keyboardbuilder.Clear();
-            VKLogic.keyboardbuilder.AddButton("Сектор", "сектор", null);
-            VKLogic.keyboardbuilder.AddButton("Перелет", "перелет", null);
-            VKLogic.keyboardbuilder.AddLine();
+            VKLogic.keyboardbuilder.AddButton("Навигация", "навигация", null);
             VKLogic.keyboardbuilder.AddButton("Взаимоотношения", "взаимоотношения", null);
             VKLogic.keyboardbuilder.AddLine();
             VKLogic.keyboardbuilder.AddButton("Насторйки", "настройки", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Primary);
@@ -32,9 +31,34 @@ namespace VKBot.Models
             VKLogic.keyboardbuilder.AddButton("Назад", "назад", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Primary);
         }
 
-        public static void Menu_SpaceTravel()
+        public static void Menu_Navigation()
         {
             VKLogic.keyboardbuilder.Clear();
+            VKLogic.keyboardbuilder.AddButton("Гиперпрыжок", "гиперпрыжок", null);
+            VKLogic.keyboardbuilder.AddButton("Сектор", "сектор", null);
+            VKLogic.keyboardbuilder.AddLine();
+            VKLogic.keyboardbuilder.AddButton("Назад", "назад", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Primary);
+        }
+
+        public static void Menu_Hyperleap(long? userid)
+        {
+            SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
+            string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
+
+            SQLLogic.Search(true, "SectorsNames", "sectors", $"SectorName='{Sector}'");
+            string[] Sectors = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
+
+            VKLogic.keyboardbuilder.Clear();
+            VKLogic.keyboardbuilder.AddButton(Sectors[0], Sectors[0], null);
+            VKLogic.keyboardbuilder.AddButton(Sectors[1], Sectors[1], null);
+            VKLogic.keyboardbuilder.AddLine();
+            VKLogic.keyboardbuilder.AddButton(Sectors[2], Sectors[2], null);
+            VKLogic.keyboardbuilder.AddButton(Sectors[3], Sectors[3], null);
+            VKLogic.keyboardbuilder.AddLine();
+            VKLogic.keyboardbuilder.AddButton(Sectors[4], Sectors[4], null);
+            VKLogic.keyboardbuilder.AddButton(Sectors[5], Sectors[5], null);
+            VKLogic.keyboardbuilder.AddLine();
+            VKLogic.keyboardbuilder.AddButton("Назад", "назад", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Primary);
         }
     }
 }

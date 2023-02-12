@@ -52,7 +52,7 @@ namespace VKBot.Utilities
                 return false;
             else
             {
-                SQLLogic.Search(true, "isBaned", "userinfo", "UserID", userid.ToString());
+                SQLLogic.Search(true, "isBaned", "userinfo", $"UserID={userid.ToString()}");
 
                 if (Convert.ToInt32(SQLLogic.command.ExecuteScalar()) == 0)
                     return false;

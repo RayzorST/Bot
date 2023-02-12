@@ -14,6 +14,9 @@ namespace VKBot.Utilities
 
         public static void NewCharacter(long? userid, string message)
         {
+            SQLLogic.Search(true, "CreationStage", "userinfo", $"UserID={userid}");
+            command = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
+
             switch (command)
             {
                 case 0:
@@ -39,6 +42,8 @@ namespace VKBot.Utilities
 
         private static int CreateCharacterPart0(long? userid)
         {
+            keyboardbuilder.Clear();
+
             SendMessage("Привествую!\nЯ твой помощник" +
                      "\n\nДай-ка пробью тебя по базе...",
                      userid, keyboardbuilder.Build());
@@ -61,17 +66,19 @@ namespace VKBot.Utilities
             SendMessage($"\nНо тут нет ни твоего имени, ни пола.\nНачнем с полесднего.",
                userid, keyboardbuilder.Build());
 
+            SQLLogic.Insert(true, "userinfo", $"{userid}, 1,'Noname', '{userid}', 20000, 0, 'Prosperity', '', 1, 1");
+
             return 1;
         }
 
         private static int CreateCharacterPart1(long? userid, string message)
         {
             keyboardbuilder.Clear();
+
             switch (message)
             {
                 default:
-                    gender = random.Next(0, 2);
-                    break;
+                    return 1;
 
                 case "М":
                     gender = 0;
@@ -84,11 +91,17 @@ namespace VKBot.Utilities
             SendMessage($"\nХорошо.\nТеперь теперь придумай себе имя.",
                userid, keyboardbuilder.Build());
             keyboardbuilder.Clear();
+
+            SQLLogic.Update("userinfo", $"Gender={gender}", $"UserID={userid}");
+            SQLLogic.Update("userinfo", $"CreationStage=2", $"UserID={userid}");
+
             return 2;
         }
 
         private static int CreateCharacterPart2(long? userid, string message)
         {
+            keyboardbuilder.Clear();
+
             nickname = message;
             if(nickname.Length <= 20 && nickname.Length >= 3)
             {
@@ -98,6 +111,10 @@ namespace VKBot.Utilities
                 keyboardbuilder.AddButton("Готово", "готово", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Positive);
                 SendMessage($"\nВсе. Я почти занес изменения в базу.\nХочешь что-нибуть изменить?",
                    userid, keyboardbuilder.Build());
+
+                SQLLogic.Update("userinfo", $"Nickname='{nickname}'", $"UserID={userid}");
+                SQLLogic.Update("userinfo", $"CreationStage=3", $"UserID={userid}");
+
                 return 3;
             }
             else
@@ -110,6 +127,8 @@ namespace VKBot.Utilities
 
         private static int CreateCharacterPart3(long? userid, string message)
         {
+            keyboardbuilder.Clear();
+
             switch (message.ToLower())
             {
                 default:
@@ -120,18 +139,23 @@ namespace VKBot.Utilities
                     keyboardbuilder.AddButton("Ж", "Ж", null);
                     SendMessage($"Выбери пол",
                        userid, keyboardbuilder.Build());
+                    SQLLogic.Update("userinfo", $"CreationStage=4", $"UserID={userid}");
                     return 4;
 
                 case "имя":
                     SendMessage($"Введите имя",
                        userid, keyboardbuilder.Build());
+                    SQLLogic.Update("userinfo", $"CreationStage=5", $"UserID={userid}");
                     return 5;
 
                 case "готово":
-                    SQLLogic.Insert(true, "userinfo", $"{userid.ToString()}, 1, '{nickname}', {userid.ToString()}, 20000, {gender}, 'Prosperity'", null);
                     Menus.Menu();
                     SendMessage($"\nЯ обновил информацию, {nickname}.\nА теперь можем отправиться покорять эту галактику.",
                     userid, keyboardbuilder.Build());
+
+                    SQLLogic.Update("userinfo", $"GameReady=0", $"UserID={userid}");
+                    SQLLogic.Update("userinfo", $"CreationStage=3", $"UserID={userid}");
+
                     return 0;
             }
         }
@@ -139,6 +163,8 @@ namespace VKBot.Utilities
         public static int ChangeNickname(long? userid, string message)
         {
             nickname = message;
+            SQLLogic.Update("userinfo", $"Nickname={message}", $"UserID={userid}");
+            SQLLogic.Update("userinfo", $"CreationStage=3", $"UserID={userid}");
             return 3;
         }
 
@@ -158,6 +184,8 @@ namespace VKBot.Utilities
                     gender = 1;
                     break;
             }
+            SQLLogic.Update("userinfo", $"CreationStage=3", $"UserID={userid}");
+            SQLLogic.Update("userinfo", $"Gender={gender}", $"UserID={userid}");
             return 3;
         }
     }

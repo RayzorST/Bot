@@ -38,24 +38,33 @@ namespace VKBot.Functions
             return true;
         }
 
-        public static bool SocialOn = false, SettingsOn = false;
         public static void Response(string message, long? userid)
         {
-            if (CheckUser(userid) == false)
+            SQLLogic.Search(true, "Menu", "userinfo", $"UserID={userid}");
+            string[] menu = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
+
+            SQLLogic.Search(true, "GameReady", "userinfo", $"UserID={userid}");
+            int GameReady = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
+
+            if (CheckUser(userid) == false || GameReady == 1)
             {
                 CreateCharacter.NewCharacter(userid, message);
             }
-            else if (SocialOn)
+            else if (menu[0] == "Navigation menu")
+            {
+                Menu_Navagation.Get(message, userid, menu);
+            }
+            else if (menu[0] == "Social menu")
             {
                 Menu_Social.Get(message, userid);
             }
-            else if (SettingsOn)
+            else if (menu[0] == "Settings menu")
             {
                 Menu_Settings.Get(message, userid);
             }
             else
             {
-                Menu.Get(message, userid);
+                Menu.Get(message, userid, menu);
             }
         }
     }

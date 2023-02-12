@@ -13,7 +13,7 @@ namespace VKBot.Models.MenuFunctions
                     break;
 
                 case "назад":
-                    BotLogic.SocialOn = false;
+                    SQLLogic.Update("userinfo", "Menu=''", $"UserID={userid}");
                     Menus.Menu();
                     SendMessage("Речь не распознана",
                         userid, keyboardbuilder.Build());

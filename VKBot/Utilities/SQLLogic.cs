@@ -41,10 +41,10 @@ namespace VKBot.Utilities
             return count;
         }
 
-        public static void Search(bool criterion, string item, string from, string where, string comparison)
+        public static void Search(bool criterion, string item, string from, string where)
         {
             if(criterion)
-                command.CommandText = String.Format($"SELECT {item} FROM {from} WHERE {where}={comparison};");
+                command.CommandText = String.Format($"SELECT {item} FROM {from} WHERE {where};");
             else
                 command.CommandText = String.Format($"SELECT {item} FROM {from};");
         }

@@ -7,7 +7,7 @@ namespace VKBot.Functions
     {
         public static void SendMoney(long? from, string to, string value)
         {
-            SQLLogic.Search(true, "Credits", "userinfo", "UserID", Convert.ToString(from));
+            SQLLogic.Search(true, "Credits", "userinfo", $"UserID={Convert.ToString(from)}");
             int count = Convert.ToInt32(SQLLogic.command.ExecuteScalar());
             try
             {

@@ -17,7 +17,7 @@ namespace VKBot.Models.MenuFunctions
                 case "навигация":
                     SQLLogic.Update("userinfo", "Menu='Navigation menu'", $"UserID={userid}");
                     Menus.Menu_Navigation();
-                    SendMessage("Вот мои возможности:",
+                    SendMessage("Меню навигации",
                         userid, keyboardbuilder.Build());
                     break;
 
@@ -30,7 +30,7 @@ namespace VKBot.Models.MenuFunctions
                 case "взаимоотношения":
                     SQLLogic.Update("userinfo", "Menu='Social menu'", $"UserID={userid}");
                     Menus.Menu_Social();
-                    SendMessage("Чтобы перевести кредиты другому игроку напишите: [игровой ID] [сумма] ",
+                    SendMessage("Меню взаимоотношений",
                        userid, keyboardbuilder.Build());
                     break;
 

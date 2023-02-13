@@ -9,57 +9,21 @@ namespace VKBot.Models.MenuFunctions
         {
             if (menu.Length > 1)
             {
-                if (menu[1] == "hyperleap")
+                if (menu[1] == "maneuver")
                 {
-                    SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
-                    string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
 
-                    SQLLogic.Search(true, "SectorsNames", "sectors", $"SectorName='{Sector}'");
-                    string[] Sectors = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
-
-                    if(message == "назад")
+                }
+                else if (menu[1] == "hyperleap")
+                {
+                    switch (message)
                     {
-                        Menus.Menu_Navigation();
-                        SendMessage("Меню",
-                        userid, keyboardbuilder.Build());
-                        SQLLogic.Update("userinfo", "Menu='Navigation menu'", $"UserID={userid}");
+                        case "назад":
+                            Menus.Menu_Navigation();
+                            SendMessage("меню",
+                            userid, keyboardbuilder.Build());
+                            SQLLogic.Update("userinfo", "Menu='Navigation menu'", $"UserID={userid}");
+                            break;
                     }
-                    else if(message == Sectors[0])
-                    {
-                        if(Sectors[0] == "Noname")
-                        {
-
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                    else if (message == Sectors[1])
-                    {
-
-                    }
-                    else if (message == Sectors[2])
-                    {
-
-                    }
-                    else if (message == Sectors[3])
-                    {
-
-                    }
-                    else if (message == Sectors[4])
-                    {
-
-                    }
-                    else if (message == Sectors[5])
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
-
                 }
             }
             else
@@ -70,10 +34,17 @@ namespace VKBot.Models.MenuFunctions
                         break;
 
                     case "гиперпрыжок":
-                        Menus.Menu_Hyperleap(userid);
-                        SendMessage("Гиперпрыжок",
-                       userid, keyboardbuilder.Build());
+                        Menus.Menu_Hyperleap();
+                        SendMessage("гиперпрыжок",
+                            userid, keyboardbuilder.Build());
                         SQLLogic.Update("userinfo", "Menu='Navigation menu/hyperleap'", $"UserID={userid}");
+                        break;
+
+                    case "манёвр":
+                        Menus.Menu_Maneuver(userid);
+                        SendMessage("Манёвр",
+                            userid, keyboardbuilder.Build());
+                        SQLLogic.Update("userinfo", "Menu='Navigation menu/maneuver'", $"UserID={userid}");
                         break;
 
                     case "сектор":
@@ -82,7 +53,7 @@ namespace VKBot.Models.MenuFunctions
 
                     case "назад":
                         Menus.Menu();
-                        SendMessage("Меню",
+                        SendMessage("назад",
                        userid, keyboardbuilder.Build());
                         SQLLogic.Update("userinfo", "Menu=''", $"UserID={userid}");
                         break;

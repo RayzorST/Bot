@@ -24,6 +24,21 @@ namespace VKBot.Functions
             //VKLogic.SendMessage($"Название сектора {name}\nКол-во ближайших секторов {routes}", userid, null);
         }
 
+        public static bool CheckSector(long? userid, string message)
+        {
+            SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
+            string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
+
+            SQLLogic.Search(true, "SectorsNames", "sectors", $"SectorName='{Sector}'");
+            string[] Sectors = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
+
+            for(int i = 0; i < Sectors.Length; i++)
+            {
+                if(message.ToLower() == Sectors[i].ToLower() + " " + i) { return true; }
+            }
+            return false;
+        }
+
         public static void GoTo(string SectorName, long? userid)
         {
 
@@ -37,28 +52,8 @@ namespace VKBot.Functions
             }
         }
 
-        public static VkNet.Enums.SafetyEnums.KeyboardButtonColor SectorStatus(string name)
-        {
-            if(name == "Noname")
-                return VkNet.Enums.SafetyEnums.KeyboardButtonColor.Default;
-            else if(name == "---")
-                return VkNet.Enums.SafetyEnums.KeyboardButtonColor.Negative;
-            else
-                return VkNet.Enums.SafetyEnums.KeyboardButtonColor.Positive;
-        }
-
         public static void NewSector(string message, long? userid)
         {
-            
-        }
-
-        public static void Maneuver(string message, long? userid)
-        {
-            SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
-            string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
-
-            SQLLogic.Search(true, "SectorsNames", "sectors", $"SectorName='{Sector}'");
-            string[] Sectors = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
             
         }
     }

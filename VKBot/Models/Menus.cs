@@ -50,13 +50,17 @@ namespace VKBot.Models
             string[] Sectors = Convert.ToString(SQLLogic.command.ExecuteScalar()).Split("/");
 
             VKLogic.keyboardbuilder.Clear();
-            VKLogic.keyboardbuilder.AddButton(Sectors[0], Sectors[0] + " 0", SpaceTravel.SectorStatus(Sectors[0]));
-            VKLogic.keyboardbuilder.AddButton(Sectors[1], Sectors[1] + " 1", SpaceTravel.SectorStatus(Sectors[1]));
-            VKLogic.keyboardbuilder.AddButton(Sectors[2], Sectors[2] + " 2", SpaceTravel.SectorStatus(Sectors[2]));
+            VKLogic.keyboardbuilder.AddButton(Sectors[0], Sectors[0] + " 0", VKBeauty.SectorStatus(Sectors[0], "Noname", "---"));
+            VKLogic.keyboardbuilder.AddButton(Sectors[1], Sectors[1] + " 1", VKBeauty.SectorStatus(Sectors[1], "Noname", "---"));
+            VKLogic.keyboardbuilder.AddButton(Sectors[2], Sectors[2] + " 2", VKBeauty.SectorStatus(Sectors[2], "Noname", "---"));
             VKLogic.keyboardbuilder.AddLine();
-            VKLogic.keyboardbuilder.AddButton(Sectors[4], Sectors[4] + " 4", SpaceTravel.SectorStatus(Sectors[4]));
-            VKLogic.keyboardbuilder.AddButton(Sectors[3], Sectors[3] + " 3", SpaceTravel.SectorStatus(Sectors[3]));
-            VKLogic.keyboardbuilder.AddButton(Sectors[5], Sectors[5] + " 5", SpaceTravel.SectorStatus(Sectors[5]));
+            VKLogic.keyboardbuilder.AddButton(Sectors[7], Sectors[7] + " 7", VKBeauty.SectorStatus(Sectors[4], "Noname", "---"));
+            VKLogic.keyboardbuilder.AddButton("Направления", "Направления", null);
+            VKLogic.keyboardbuilder.AddButton(Sectors[3], Sectors[3] + " 3", VKBeauty.SectorStatus(Sectors[5], "Noname", "---"));
+            VKLogic.keyboardbuilder.AddLine();
+            VKLogic.keyboardbuilder.AddButton(Sectors[6], Sectors[6] + " 6", VKBeauty.SectorStatus(Sectors[0], "Noname", "---"));
+            VKLogic.keyboardbuilder.AddButton(Sectors[5], Sectors[5] + " 5", VKBeauty.SectorStatus(Sectors[1], "Noname", "---"));
+            VKLogic.keyboardbuilder.AddButton(Sectors[4], Sectors[4] + " 4", VKBeauty.SectorStatus(Sectors[2], "Noname", "---"));
             VKLogic.keyboardbuilder.AddLine();
             VKLogic.keyboardbuilder.AddButton("Назад", "назад", VkNet.Enums.SafetyEnums.KeyboardButtonColor.Primary);
         }

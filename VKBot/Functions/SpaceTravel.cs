@@ -24,7 +24,7 @@ namespace VKBot.Functions
             //VKLogic.SendMessage($"Название сектора {name}\nКол-во ближайших секторов {routes}", userid, null);
         }
 
-        public static bool CheckSector(long? userid, string message)
+        public static int CheckSectorNear(long? userid, string message)
         {
             SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
             string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
@@ -34,9 +34,9 @@ namespace VKBot.Functions
 
             for(int i = 0; i < Sectors.Length; i++)
             {
-                if(message.ToLower() == Sectors[i].ToLower() + " " + i) { return true; }
+                if(message.ToLower() == Sectors[i].ToLower() + " " + i) { return i; }
             }
-            return false;
+            return -1;
         }
 
         public static void GoTo(string SectorName, long? userid)
@@ -54,7 +54,37 @@ namespace VKBot.Functions
 
         public static void NewSector(string message, long? userid)
         {
-            
+            SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
+            string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
+
+            SQLLogic.Search(true, "SectorsNames", "sectors", $"SectorName='{Sector}'");
+            string[] Sectors = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
+
+            int NumberSector = -1;
+
+            for (int i = 0; i < Sectors.Length; i++)
+            {
+                if ("newsector" == Sectors[i].ToLower()) { NumberSector = i; }
+            }
+
+            if (NumberSector != -1)
+            {
+                string SectrosNames = "";
+
+                for (int i = 0; i < Sectors.Length - 1; i++)
+                {
+                    if (i != NumberSector)
+                        SectrosNames += Sectors[i] + "/";
+                    else
+                        SectrosNames += message + "/";
+                }
+
+                SQLLogic.Update("sectors", $"SectorsNames='{SectrosNames}'", $"SectorName='{Sector}'");
+            }
+            else
+            {
+
+            }   
         }
     }
 }

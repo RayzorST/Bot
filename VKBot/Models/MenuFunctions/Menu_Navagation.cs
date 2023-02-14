@@ -34,12 +34,39 @@ namespace VKBot.Models.MenuFunctions
                     }
                     else
                     {
-                        if (SpaceTravel.CheckSector(userid, message))
+                        int NumberSector = SpaceTravel.CheckSectorNear(userid, message);
+
+                        if (NumberSector != -1)
                         {
-                            Menus.Menu_NewSector();
-                            SendMessage("New sector",
-                                userid, keyboardbuilder.Build());
-                            SQLLogic.Update("userinfo", "Menu='Navigation menu/maneuver/newsector'", $"UserID={userid}");
+                            if(message.ToLower() == "noname")
+                            {
+                                Menus.Menu_NewSector();
+                                SendMessage("New sector",
+                                    userid, keyboardbuilder.Build());
+                                SQLLogic.Update("userinfo", "Menu='Navigation menu/maneuver/newsector'", $"UserID={userid}");
+
+                                SQLLogic.Search(true, "Sector", "userinfo", $"UserID={userid.ToString()}");
+                                string Sector = Convert.ToString(SQLLogic.command.ExecuteScalar());
+
+                                SQLLogic.Search(true, "SectorsNames", "sectors", $"SectorName='{Sector}'");
+                                string[] Sectors = (Convert.ToString(SQLLogic.command.ExecuteScalar())).Split("/");
+
+                                string SectorsNames = "";
+
+                                for (int i = 0; i < Sectors.Length - 1; i++)
+                                {
+                                    if (i != NumberSector)
+                                        SectorsNames += Sectors[i] + "/";
+                                    else
+                                        SectorsNames += "NewSector/";
+                                }
+
+                                SQLLogic.Update("sectors", $"SectorsNames='{SectorsNames}'", $"SectorName='{Sector}'");
+                            }
+                            else
+                            {
+                                SpaceTravel.GoTo(message, userid);
+                            }
                         }
                         else
                         {
@@ -60,7 +87,14 @@ namespace VKBot.Models.MenuFunctions
                 }
                 else
                 {
-
+                    if (SQLLogic.SearchCount("sectors", "SectorName", message) != 0)
+                    {
+                        SpaceTravel.GoTo(message, userid);
+                    }
+                    else
+                    {
+                        //error
+                    }
                 }
             }
             else
